@@ -9,8 +9,10 @@ import com.svirski.spring.core.models.User;
 import com.svirski.spring.core.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -83,7 +85,7 @@ public class BookingController {
     @RequestMapping(method = RequestMethod.POST, produces="application/pdf", value = "/tickets/for/event/")
     public
     @ResponseBody
-    ModelAndView getTicketsForEvent(String event, String auditorium, LocalDateTime date) {
+    ModelAndView getTicketsForEvent(@ModelAttribute("event") String event, @ModelAttribute("auditorium") String auditorium, @ModelAttribute("date")  LocalDateTime date) {
         List<Ticket> tickets = bookingService.getTicketsForEvent(event, auditorium, date);
         ModelAndView modelAndView = new ModelAndView("ticketListPagePdfView");
         modelAndView.addObject("ticketList", tickets);

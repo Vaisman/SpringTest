@@ -8,7 +8,9 @@ import com.svirski.spring.core.models.User;
 import com.svirski.spring.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +43,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT)
     public
     @ResponseBody
-    ModelAndView register(User user) {
+    ModelAndView register(@ModelAttribute("user") User user) {
         User result = userService.register(user);
         List<User> users = new ArrayList<>();
         users.add(result);
@@ -56,7 +58,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.DELETE)
     public
     @ResponseBody
-    ModelAndView remove(User user) {
+    ModelAndView remove(@RequestBody User user) {
         userService.remove(user);
         List<User> users = new ArrayList<>();
         users.add(new User());

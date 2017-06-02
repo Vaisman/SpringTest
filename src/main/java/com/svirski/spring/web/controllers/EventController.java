@@ -13,6 +13,7 @@ import com.svirski.spring.core.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -145,7 +146,7 @@ public class EventController {
     @RequestMapping(method = RequestMethod.POST, value = "/assign/auditorium/")
     public
     @ResponseBody
-    ModelAndView assignAuditorium(Event event, Auditorium auditorium, LocalDateTime date) {
+    ModelAndView assignAuditorium(@RequestBody Event event, @RequestBody Auditorium auditorium, @RequestBody LocalDateTime date) {
         Event resultEvent = eventService.assignAuditorium(event, auditorium, date);
         List<Event> events = new ArrayList<>();
         events.add(resultEvent);
