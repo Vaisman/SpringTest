@@ -7,6 +7,7 @@ import com.svirski.spring.core.models.Auditorium;
 import com.svirski.spring.core.services.AuditoriumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,10 +48,10 @@ public class AuditoriumController {
      *
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/nymberbyname/{name}")
+    @RequestMapping(method = RequestMethod.GET, value = "/number/by/name/{name}")
     public
     @ResponseBody
-    ModelAndView getByName(String name) {
+    ModelAndView getByName(@PathVariable("name") String name) {
         Integer seats = auditoriumService.getSeatsNumber(name);
         return GetModelView(new ArrayList<>(seats));
     }
@@ -59,10 +60,10 @@ public class AuditoriumController {
      *
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/numbersbyname/{name}")
+    @RequestMapping(method = RequestMethod.GET, value = "/numbers/by/name/{name}")
     public
     @ResponseBody
-    ModelAndView getSeatsNumber(String name) {
+    ModelAndView getSeatsNumber(@PathVariable("name") String name) {
         Integer seats = auditoriumService.getSeatsNumber(name);
         return GetModelView(new ArrayList<>(seats));
     }
@@ -74,7 +75,7 @@ public class AuditoriumController {
     @RequestMapping(method = RequestMethod.GET, value = "/vip/{name}")
     public
     @ResponseBody
-    ModelAndView getVipSeats(String name) {
+    ModelAndView getVipSeats(@PathVariable("name") String name) {
         List<Integer> auditorium = auditoriumService.getVipSeats(name);
         return GetModelView(auditorium);
     }

@@ -110,11 +110,14 @@ public class UserController {
      *
      * @return
      */
-   @RequestMapping(method = RequestMethod.GET, value = "/tickets/")
+   @RequestMapping(method = RequestMethod.GET, produces="application/pdf", value = "/tickets/")
    public
    @ResponseBody
    ModelAndView getBookedTickets() {
        List<Ticket> tickets = userService.getBookedTickets();
-       return GetModelView(tickets);
+       tickets.add(new Ticket());
+       ModelAndView modelAndView = new ModelAndView("ticketListPagePdfView");
+       modelAndView.addObject("ticketList", tickets);
+       return modelAndView;
    }
 }

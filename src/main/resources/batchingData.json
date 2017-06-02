@@ -1,0 +1,12 @@
+{
+  "pairsArray": [
+    {
+      "ticketId": "11",
+      "userId": "22"
+    },
+    {
+      "ticketId": "33",
+      "userId": "44"
+    }
+  ]
+}
