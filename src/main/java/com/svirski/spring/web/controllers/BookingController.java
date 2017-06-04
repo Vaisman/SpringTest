@@ -1,19 +1,24 @@
 package com.svirski.spring.web.controllers;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.svirski.spring.core.models.Auditorium;
+import com.svirski.spring.core.models.Event;
 import com.svirski.spring.core.models.Ticket;
 import com.svirski.spring.core.models.User;
 import com.svirski.spring.core.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -52,7 +57,12 @@ public class BookingController {
     @RequestMapping(method = RequestMethod.POST, value = "/ticket/price/")
     public
     @ResponseBody
-    ModelAndView getTicketPrice(String event, String auditorium, LocalDateTime dateTime, List<Integer> seats, User user) {
+    ModelAndView getTicketPrice(@ModelAttribute("event") String event,
+                                @ModelAttribute("auditorium") String auditorium,
+                                @ModelAttribute("dateTime") LocalDateTime dateTime,
+                                @ModelAttribute("seats") List<Integer> seats,
+                                @ModelAttribute("user") User user) {
+
         Double price = bookingService.getTicketPrice(event, auditorium, dateTime, seats, user);
         List<Double> prices = new ArrayList<>();
         prices.add(price);
@@ -61,14 +71,22 @@ public class BookingController {
 
     /**
      *
-     * @param user
-     * @param ticket
+     * @param info
      * @return
+     * @throws IOException
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/book/")
     public
     @ResponseBody
-    ModelAndView bookTicket(User user, Ticket ticket) {
+    ModelAndView bookTicket(@RequestBody String info) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonNode root = mapper.readTree(info);
+        JsonNode userNode = root.path("User");
+        JsonNode ticketNode = root.path("Ticket");
+        User user = mapper.readValue(userNode.toString(), User.class);
+        Ticket ticket = mapper.readValue(ticketNode.toString(), Ticket.class);
+
         Ticket resultTicket = bookingService.bookTicket(user, ticket);
         List<Ticket> tickets = new ArrayList<>();
         tickets.add(ticket);
@@ -77,16 +95,25 @@ public class BookingController {
 
     /**
      *
-     * @param event
-     * @param auditorium
-     * @param date
+     * @param info
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, produces="application/pdf", value = "/tickets/for/event/")
     public
     @ResponseBody
-    ModelAndView getTicketsForEvent(@ModelAttribute("event") String event, @ModelAttribute("auditorium") String auditorium, @ModelAttribute("date")  LocalDateTime date) {
-        List<Ticket> tickets = bookingService.getTicketsForEvent(event, auditorium, date);
+    ModelAndView getTicketsForEvent(@RequestBody String info) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonNode root = mapper.readTree(info);
+
+        String auditorium = root.path("Auditorium").asText();
+        String event = root.path("Event").asText();
+
+        String date = root.path("Date").asText();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+
+        List<Ticket> tickets = bookingService.getTicketsForEvent(event, auditorium, dateTime);
         ModelAndView modelAndView = new ModelAndView("ticketListPagePdfView");
         modelAndView.addObject("ticketList", tickets);
         return modelAndView;

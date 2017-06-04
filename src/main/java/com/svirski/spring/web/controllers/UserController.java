@@ -8,12 +8,7 @@ import com.svirski.spring.core.models.User;
 import com.svirski.spring.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -36,14 +31,13 @@ public class UserController {
     }
 
     /**
-     *
      * @param user
      * @return
      */
     @RequestMapping(method = RequestMethod.PUT)
     public
     @ResponseBody
-    ModelAndView register(@ModelAttribute("user") User user) {
+    ModelAndView register(@RequestBody User user) {
         User result = userService.register(user);
         List<User> users = new ArrayList<>();
         users.add(result);
@@ -51,7 +45,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param user
      * @return
      */
@@ -66,7 +59,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -81,7 +73,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param email
      * @return
      */
@@ -96,7 +87,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param name
      * @return
      */
@@ -109,17 +99,16 @@ public class UserController {
     }
 
     /**
-     *
      * @return
      */
-   @RequestMapping(method = RequestMethod.GET, produces="application/pdf", value = "/tickets/")
-   public
-   @ResponseBody
-   ModelAndView getBookedTickets() {
-       List<Ticket> tickets = userService.getBookedTickets();
-       tickets.add(new Ticket());
-       ModelAndView modelAndView = new ModelAndView("ticketListPagePdfView");
-       modelAndView.addObject("ticketList", tickets);
-       return modelAndView;
-   }
+    @RequestMapping(method = RequestMethod.GET, produces = "application/pdf", value = "/tickets/")
+    public
+    @ResponseBody
+    ModelAndView getBookedTickets() {
+        List<Ticket> tickets = userService.getBookedTickets();
+        tickets.add(new Ticket());
+        ModelAndView modelAndView = new ModelAndView("ticketListPagePdfView");
+        modelAndView.addObject("ticketList", tickets);
+        return modelAndView;
+    }
 }

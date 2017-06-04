@@ -4,7 +4,7 @@
     </h4>
     <ul>
         <#list objectsList as obj>
-            <li>${obj.toString()}</li>
+            <li>${obj}</li>
         </#list>
     </ul>
 </div>

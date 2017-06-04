@@ -12,11 +12,7 @@ import com.svirski.spring.core.services.DiscountService;
 import com.svirski.spring.core.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -48,10 +44,10 @@ public class EventController {
      * @param event
      * @return
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/create/")
+    @RequestMapping(method = RequestMethod.PUT)
     public
     @ResponseBody
-    ModelAndView create(Event event) {
+    ModelAndView create(@RequestBody Event event) {
         Event resultEvent = eventService.create(event);
         List<Event> events = new ArrayList<>();
         events.add(resultEvent);
@@ -63,10 +59,10 @@ public class EventController {
      * @param event
      * @return
      */
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/")
+    @RequestMapping(method = RequestMethod.DELETE)
     public
     @ResponseBody
-    ModelAndView remove(Event event) {
+    ModelAndView remove(@RequestBody Event event) {
         eventService.remove(event);
         List<Event> events = new ArrayList<>();
         return GetModelView(events);
@@ -82,7 +78,9 @@ public class EventController {
     @RequestMapping(method = RequestMethod.POST, value = "/event/")
     public
     @ResponseBody
-    ModelAndView getEvent(String name, Auditorium auditorium, LocalDateTime dateTime) {
+    ModelAndView getEvent(@ModelAttribute("name") String name,
+                          @ModelAttribute("auditorium") Auditorium auditorium,
+                          @ModelAttribute("dateTime") LocalDateTime dateTime) {
         Event event = eventService.getEvent(name, auditorium, dateTime);
         List<Event> events = new ArrayList<>();
         events.add(event);
@@ -124,7 +122,8 @@ public class EventController {
     @RequestMapping(method = RequestMethod.POST, value = "/range/")
     public
     @ResponseBody
-    ModelAndView getForDateRange(LocalDateTime from, LocalDateTime to) {
+    ModelAndView getForDateRange(@ModelAttribute("from") LocalDateTime from,
+                                 @ModelAttribute("to") LocalDateTime to) {
         List<Event> events = eventService.getForDateRange(from, to);
         return GetModelView(events);
     }
@@ -146,7 +145,9 @@ public class EventController {
     @RequestMapping(method = RequestMethod.POST, value = "/assign/auditorium/")
     public
     @ResponseBody
-    ModelAndView assignAuditorium(@RequestBody Event event, @RequestBody Auditorium auditorium, @RequestBody LocalDateTime date) {
+    ModelAndView assignAuditorium(@ModelAttribute("event") Event event,
+                                  @ModelAttribute("auditorium") Auditorium auditorium,
+                                  @ModelAttribute("date") LocalDateTime date) {
         Event resultEvent = eventService.assignAuditorium(event, auditorium, date);
         List<Event> events = new ArrayList<>();
         events.add(resultEvent);
