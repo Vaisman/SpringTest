@@ -4,6 +4,9 @@ import com.svirski.spring.core.configuration.AppConfiguration;
 import com.svirski.spring.core.configuration.TestUserServiceConfiguration;
 import com.svirski.spring.core.configuration.db.DataSourceConfiguration;
 import com.svirski.spring.core.configuration.db.DbSessionFactory;
+import com.svirski.spring.core.daos.UserDAO;
+import com.svirski.spring.core.daos.db.UserDAOImpl;
+import com.svirski.spring.core.daos.mocks.IUserDAOMock;
 import com.svirski.spring.core.daos.mocks.UserDAOMock;
 import com.svirski.spring.core.models.User;
 import com.svirski.spring.core.services.UserService;
@@ -45,7 +48,8 @@ public class UserServiceImplTest {
     private UserService userService;
 
     @Autowired
-    private UserDAOMock userDAOMock;
+    @Value("#{testUserDAOImpl}")
+    private IUserDAOMock userDAOMock;
 
     @Before
     public void init() {
@@ -60,7 +64,7 @@ public class UserServiceImplTest {
     @Test
     public void testRegister() throws Exception {
         String email = UUID.randomUUID().toString();
-        User user = new User(email, UUID.randomUUID().toString(), LocalDate.now());
+        User user = new User(email, UUID.randomUUID().toString(), LocalDate.now(), "1","BOOKING_MANAGER");
         long registeredId = userService.register(user).getId();
         assertEquals("User should be the same", userService.getUserByEmail(email), user.withId(registeredId));
     }
@@ -82,7 +86,7 @@ public class UserServiceImplTest {
     public void testUsersGetByName() throws Exception {
         User testUser1 = (User) applicationContext.getBean("testUser1");
         List<User> before = userService.getUsersByName(testUser1.getName());
-        User addedUser = new User(UUID.randomUUID().toString(), testUser1.getName(), LocalDate.now());
+        User addedUser = new User(UUID.randomUUID().toString(), testUser1.getName(), LocalDate.now(), "1","BOOKING_MANAGER");
         long registeredId = userService.register(addedUser).getId();
         List<User> after = userService.getUsersByName(testUser1.getName());
         before.add(addedUser.withId(registeredId));

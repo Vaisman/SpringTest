@@ -49,8 +49,8 @@ public class Main {
         Auditorium redHall = auditoriumService.getByName("Red hall");
         LocalDateTime dateOfEvent = LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(15, 45, 0));
 
-        userService.register(new User(email, name, LocalDate.now()));
-        userService.register(new User("laory@yandex.ru", name, LocalDate.of(1992, 4, 29)));
+        userService.register(new User(email, name, LocalDate.now(), "1", "REGISTERED_USER,BOOKING_MANAGER" ));
+        userService.register(new User("laory@yandex.ru", name, LocalDate.of(1992, 4, 29), "2", "REGISTERED_USER" ));
 
         User userByEmail = userService.getUserByEmail(email);
         System.out.println("User with email: [" + email + "] is " + userByEmail);

@@ -7,6 +7,7 @@ import com.svirski.spring.core.configuration.db.DbSessionFactory;
 import com.svirski.spring.core.daos.mocks.BookingDAOBookingMock;
 import com.svirski.spring.core.daos.mocks.DBAuditoriumDAOMock;
 import com.svirski.spring.core.daos.mocks.EventDAOMock;
+import com.svirski.spring.core.daos.mocks.IUserDAOMock;
 import com.svirski.spring.core.daos.mocks.UserDAOMock;
 import com.svirski.spring.core.models.Event;
 import com.svirski.spring.core.models.Ticket;
@@ -18,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -57,7 +59,8 @@ public class TestCounterAspect {
     private EventDAOMock eventDAOMock;
 
     @Autowired
-    private UserDAOMock userDAOMock;
+    @Value("#{testUserDAOImpl}")
+    private IUserDAOMock userDAOMock;
 
     @Autowired
     private CounterAspect       counterAspect;

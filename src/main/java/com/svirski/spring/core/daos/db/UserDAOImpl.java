@@ -4,8 +4,18 @@ import com.svirski.spring.core.daos.AbstractDAO;
 import com.svirski.spring.core.daos.UserDAO;
 import com.svirski.spring.core.models.User;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +26,7 @@ import java.util.Objects;
  * Time: 4:35 PM
  */
 @Repository(value = "userDAO")
+@Transactional
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
     @Override

@@ -77,12 +77,12 @@ public class TestBookingServiceConfiguration {
 
     @Bean
     public User testUser1() {
-        return new User(0, "dmitriy.vbabichev@gmail.com", "Dmytro Babichev", java.time.LocalDate.of(1992, 4, 29));
+        return new User(0, "dmitriy.vbabichev@gmail.com", "Dmytro Babichev", java.time.LocalDate.of(1992, 4, 29), "1","BOOKING_MANAGER");
     }
 
     @Bean
     public User testUser2() {
-        return new User(1, "laory@yandex.ru", "Dmytro Babichev", java.time.LocalDate.of(1992, 4, 29));
+        return new User(1, "laory@yandex.ru", "Dmytro Babichev", java.time.LocalDate.of(1992, 4, 29), "1","BOOKING_MANAGER");
     }
 
     @Bean
@@ -123,14 +123,14 @@ public class TestBookingServiceConfiguration {
     }
 
 
-    @Bean
-    public UserDAO userDAOMock() {
+    @Bean(name = "testUserDAOImpl")
+    public IUserDAOMock userDAOMock() {
         return new UserDAOMock(Arrays.asList(testUser1()));
     }
 
     @Bean
     public UserService userServiceImpl() {
-        return new UserServiceImpl(userDAOMock());
+        return new UserServiceImpl((UserDAO) userDAOMock());
     }
 
     @Bean(name = "testBookingServiceImpl")
