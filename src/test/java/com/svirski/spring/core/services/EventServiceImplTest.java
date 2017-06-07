@@ -59,7 +59,7 @@ public class EventServiceImplTest {
     Auditorium auditorium2;
 
     private final Event testEvent = new Event(UUID.randomUUID().toString(), Rate.HIGH, 1321, LocalDateTime.now(),
-                                                     null);
+                                                     null, 1);
 
     @Autowired
     @Value("#{testEventDAOMock}")
@@ -174,7 +174,7 @@ public class EventServiceImplTest {
         List<Event> after = eventService.getAll();
         before.remove(event);
         before.add(new Event(event.getId(), event.getName(), event.getRate(), event.getBasePrice(),
-                             testEvent.getDateTime(), testEvent.getAuditorium()));
+                             testEvent.getDateTime(), testEvent.getAuditorium(), event.getTicketPrice()));
         System.out.println("before = " + before);
         System.out.println("after = " + after);
         assertTrue("Events should match", before.containsAll(after));

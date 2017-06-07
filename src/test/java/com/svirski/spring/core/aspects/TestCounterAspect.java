@@ -4,10 +4,13 @@ import com.svirski.spring.core.aspects.mocks.CountAspectMock;
 import com.svirski.spring.core.configuration.AppConfiguration;
 import com.svirski.spring.core.configuration.db.DataSourceConfiguration;
 import com.svirski.spring.core.configuration.db.DbSessionFactory;
+import com.svirski.spring.core.daos.UserAccountDAO;
 import com.svirski.spring.core.daos.mocks.BookingDAOBookingMock;
 import com.svirski.spring.core.daos.mocks.DBAuditoriumDAOMock;
 import com.svirski.spring.core.daos.mocks.EventDAOMock;
+import com.svirski.spring.core.daos.mocks.IUserAccountDAOMock;
 import com.svirski.spring.core.daos.mocks.IUserDAOMock;
+import com.svirski.spring.core.daos.mocks.UserAccountDAOMock;
 import com.svirski.spring.core.daos.mocks.UserDAOMock;
 import com.svirski.spring.core.models.Event;
 import com.svirski.spring.core.models.Ticket;
@@ -68,6 +71,10 @@ public class TestCounterAspect {
     @Autowired
     private DBAuditoriumDAOMock auditoriumDAOMock;
 
+    @Autowired()
+    @Value("#{testUserAccountDAOImpl}")
+    private IUserAccountDAOMock userAccountDAOMock;
+
     @Before
     public void init() {
         CountAspectMock.cleanup();
@@ -75,6 +82,7 @@ public class TestCounterAspect {
         userDAOMock.init();
         eventDAOMock.init();
         bookingDAOBookingMock.init();
+        userAccountDAOMock.init();
     }
 
     @After

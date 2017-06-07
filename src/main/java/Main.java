@@ -7,10 +7,12 @@ import com.svirski.spring.core.models.Event;
 import com.svirski.spring.core.models.Rate;
 import com.svirski.spring.core.models.Ticket;
 import com.svirski.spring.core.models.User;
+import com.svirski.spring.core.models.UserAccount;
 import com.svirski.spring.core.services.AuditoriumService;
 import com.svirski.spring.core.services.BookingService;
 import com.svirski.spring.core.services.DiscountService;
 import com.svirski.spring.core.services.EventService;
+import com.svirski.spring.core.services.UserAccountService;
 import com.svirski.spring.core.services.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -39,6 +41,7 @@ public class Main {
         EventService eventService = (EventService) ctx.getBean("eventServiceImpl");
         UserService userService = (UserService) ctx.getBean("userServiceImpl");
         DiscountService discountService = (DiscountService) ctx.getBean("discountServiceImpl");
+        UserAccountService userAccountService = (UserAccountService) ctx.getBean("userAccountServiceImpl");
 
         String email = "dmitriy.vbabichev@gmail.com";
         String name = "Dmytro Babichev";
@@ -62,19 +65,19 @@ public class Main {
 
         Event event1 = eventService.create(
                 new Event(eventName, Rate.HIGH, 60, LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(9, 0, 0)),
-                          blueHall));
+                          blueHall, 1));
         System.out.println();
         System.out.println("Event by name: " + eventService.getByName(event1.getName()));
         System.out.println();
-        eventService.create(new Event(eventName, Rate.HIGH, 60, dateOfEvent, blueHall));
+        eventService.create(new Event(eventName, Rate.HIGH, 60, dateOfEvent, blueHall, 1));
         Event event2 = eventService.create(
                 new Event(eventName, Rate.HIGH, 60, LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(21, 18, 0)),
-                          blueHall));
+                          blueHall, 1));
         eventService.create(
                 new Event(eventName, Rate.HIGH, 90, LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(21, 18, 0)),
-                          redHall));
+                          redHall, 1));
         Event event = new Event(eventName, Rate.HIGH, 150,
-                                LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(21, 18, 0)), yellowHall);
+                                LocalDateTime.of(LocalDate.of(2016, 2, 5), LocalTime.of(21, 18, 0)), yellowHall, 1);
         event = eventService.create(event);
 
         System.out.println("List of all events:");
@@ -141,5 +144,9 @@ public class Main {
         System.out.println("DiscountAspect.getDiscountStatistics() = " + DiscountAspect.getDiscountStatistics());
         System.out.println();
         System.out.println("LuckyWinnerAspect.getLuckyUsers() = " + LuckyWinnerAspect.getLuckyUsers());
+
+        userAccountService.create(new UserAccount(0, 0, 0.));
+        userAccountService.create(new UserAccount(1, 1, 1.));
+        userAccountService.getByUser( new User(1, "","",  LocalDate.now(), "",""));
     }
 }

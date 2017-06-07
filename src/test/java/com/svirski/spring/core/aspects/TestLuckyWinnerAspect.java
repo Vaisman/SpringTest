@@ -7,6 +7,7 @@ import com.svirski.spring.core.configuration.db.DbSessionFactory;
 import com.svirski.spring.core.daos.mocks.BookingDAOBookingMock;
 import com.svirski.spring.core.daos.mocks.DBAuditoriumDAOMock;
 import com.svirski.spring.core.daos.mocks.EventDAOMock;
+import com.svirski.spring.core.daos.mocks.IUserAccountDAOMock;
 import com.svirski.spring.core.daos.mocks.IUserDAOMock;
 import com.svirski.spring.core.daos.mocks.UserDAOMock;
 import com.svirski.spring.core.models.Ticket;
@@ -63,6 +64,10 @@ public class TestLuckyWinnerAspect {
     @Autowired
     private DBAuditoriumDAOMock auditoriumDAOMock;
 
+    @Autowired()
+    @Value("#{testUserAccountDAOImpl}")
+    private IUserAccountDAOMock userAccountDAOMock;
+
     @Before
     public void init() {
         LuckyWinnerAspectMock.cleanup();
@@ -70,6 +75,7 @@ public class TestLuckyWinnerAspect {
         userDAOMock.init();
         eventDAOMock.init();
         bookingDAOBookingMock.init();
+        userAccountDAOMock.init();
     }
 
     @After

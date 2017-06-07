@@ -16,25 +16,27 @@ public class Event {
     private double        basePrice;
     private LocalDateTime dateTime;
     private Auditorium    auditorium;
+    private double ticketPrice;
 
     public Event() {
     }
 
-    public Event(String name, Rate rate, double basePrice, LocalDateTime dateTime, Auditorium auditorium) {
-        this(-1, name, rate, basePrice, dateTime, auditorium);
+    public Event(String name, Rate rate, double basePrice, LocalDateTime dateTime, Auditorium auditorium, double ticketPrice) {
+        this(-1, name, rate, basePrice, dateTime, auditorium, ticketPrice);
     }
 
-    public Event(long id, String name, Rate rate, double basePrice, LocalDateTime dateTime, Auditorium auditorium) {
+    public Event(long id, String name, Rate rate, double basePrice, LocalDateTime dateTime, Auditorium auditorium, double ticketPrice) {
         this.id = id;
         this.name = name;
         this.rate = rate;
         this.basePrice = basePrice;
         this.dateTime = dateTime;
         this.auditorium = auditorium;
+        this.ticketPrice = ticketPrice;
     }
 
     public Event withId(Long eventId) {
-        return new Event(eventId, this.name, this.rate, this.basePrice, this.dateTime, this.auditorium);
+        return new Event(eventId, this.name, this.rate, this.basePrice, this.dateTime, this.auditorium, this.ticketPrice);
     }
 
     public long getId() {
@@ -85,6 +87,14 @@ public class Event {
         this.auditorium = auditorium;
     }
 
+    public double getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(double ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -104,6 +114,8 @@ public class Event {
             return false;
         if (dateTime != null ? !dateTime.equals(event.dateTime) : event.dateTime != null)
             return false;
+        if (Double.compare(event.ticketPrice, ticketPrice) != 0)
+            return false;
         return auditorium != null ? auditorium.equals(event.auditorium) : event.auditorium == null;
 
     }
@@ -116,6 +128,8 @@ public class Event {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (rate != null ? rate.hashCode() : 0);
         temp = Double.doubleToLongBits(basePrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(ticketPrice);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (dateTime != null ? dateTime.hashCode() : 0);
         result = 31 * result + (auditorium != null ? auditorium.hashCode() : 0);

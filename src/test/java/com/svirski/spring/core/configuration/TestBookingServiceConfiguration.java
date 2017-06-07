@@ -3,6 +3,7 @@ package com.svirski.spring.core.configuration;
 import com.svirski.spring.core.daos.AuditoriumDAO;
 import com.svirski.spring.core.daos.BookingDAO;
 import com.svirski.spring.core.daos.EventDAO;
+import com.svirski.spring.core.daos.UserAccountDAO;
 import com.svirski.spring.core.daos.UserDAO;
 import com.svirski.spring.core.daos.mocks.*;
 import com.svirski.spring.core.models.*;
@@ -66,13 +67,13 @@ public class TestBookingServiceConfiguration {
     @Bean
     public Event testEvent1() {
         return new Event(1, "Test event", com.svirski.spring.core.models.Rate.HIGH, 124.0, java.time.LocalDateTime.of(2016, 2, 6, 14, 45, 0),
-                         testHall1());
+                         testHall1(), 1);
     }
 
     @Bean
     public Event testEvent2() {
         return new Event(2, "Test event2", Rate.MID, 500.0, java.time.LocalDateTime.of(2016, 12, 6, 9, 35, 0),
-                         testHall2());
+                         testHall2(), 1);
     }
 
     @Bean
@@ -92,6 +93,61 @@ public class TestBookingServiceConfiguration {
     }
 
     @Bean
+    public UserAccount testUserAccount1() {
+        return new UserAccount(1, 1, 1.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount2() {
+        return new UserAccount(2, 2, 2000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount3() {
+        return new UserAccount(3, 3, 1000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount4() {
+        return new UserAccount(4, 4, 1000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount5() {
+        return new UserAccount(5, 5, 1000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount6() {
+        return new UserAccount(6, 6, 1000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount7() {
+        return new UserAccount(10, 7, 1000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount8() {
+        return new UserAccount(11, 8, 1000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount12() {
+        return new UserAccount(7, 12, 1000.0);
+    }
+
+    @Bean
+    public UserAccount testUserAccount14() {
+        return new UserAccount(9, 14, 1000.);
+    }
+
+    @Bean
+    public UserAccount testUserAccount11() {
+        return new UserAccount(8, 11, 1000.);
+    }
+
+    @Bean
     public Ticket testTicket2() {
         return new Ticket(2, testEvent2(), java.time.LocalDateTime.of(2016, 2, 7, 14, 45, 0), Arrays.asList(1, 2),
                           testUser1(), 123D);
@@ -100,6 +156,23 @@ public class TestBookingServiceConfiguration {
     @Bean
     public List<Ticket> tickets() {
         return Arrays.asList(testTicket1(), testTicket2());
+    }
+
+    @Bean
+    public List<UserAccount> userAccounts() {
+        return Arrays.asList(
+                testUserAccount1(),
+                testUserAccount2(),
+                testUserAccount3(),
+                testUserAccount4(),
+                testUserAccount5(),
+                testUserAccount6(),
+                testUserAccount7(),
+                testUserAccount8(),
+                testUserAccount11(),
+                testUserAccount12(),
+                testUserAccount14()
+                );
     }
 
     @Bean
@@ -122,7 +195,6 @@ public class TestBookingServiceConfiguration {
         return new AuditoriumServiceImpl(auditoriumDAO());
     }
 
-
     @Bean(name = "testUserDAOImpl")
     public IUserDAOMock userDAOMock() {
         return new UserDAOMock(Arrays.asList(testUser1()));
@@ -133,9 +205,25 @@ public class TestBookingServiceConfiguration {
         return new UserServiceImpl((UserDAO) userDAOMock());
     }
 
+    @Bean(name = "testUserAccountDAOImpl")
+    public UserAccountDAO userAccountDAOMock() {
+        List<UserAccount> userAccounts = new LinkedList<UserAccount>() {
+            {
+                addAll(userAccounts());
+            }
+        };
+        return new UserAccountDAOMock(userAccounts);
+    }
+
+    @Bean
+    public UserAccountService userAccountServiceImpl() {
+        return new UserAccountServiceImpl((UserAccountDAO)userAccountDAOMock() );
+    }
+
     @Bean(name = "testBookingServiceImpl")
     public BookingService bookingServiceImpl() {
         return new BookingServiceImpl(eventServiceImpl(), auditoriumServiceImpl(), userServiceImpl(),
-                                      discountBookingServiceImpl(), bookingBookingDAO(), 1, 2, 1.2, 1);
+                                      discountBookingServiceImpl(), userAccountServiceImpl(), bookingBookingDAO(),
+                1, 2, 1.2, 1);
     }
 }

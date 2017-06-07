@@ -33,7 +33,7 @@ public class InMemoryEventDAO implements EventDAO {
         final List<Event> assignedEvents = getByAuditoriumAndDate(event.getAuditorium(), event.getDateTime());
         if (assignedEvents.isEmpty() || (assignedEvents.size() == 1 && Objects.equals(assignedEvents.get(0).getName(),
                                                                                       event.getName()))) {
-            delete(new Event(event.getId(), event.getName(), event.getRate(), event.getBasePrice(), null, null));
+            delete(new Event(event.getId(), event.getName(), event.getRate(), event.getBasePrice(), null, null, event.getTicketPrice()));
             return create(event);
         } else
             throw new IllegalStateException(String.format(
