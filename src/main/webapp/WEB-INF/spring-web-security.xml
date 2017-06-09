@@ -27,7 +27,7 @@
         <logout logout-url="/j_spring_security_logout"
                 logout-success-url="/"  />
 
-        <remember-me key="rmkey" token-validity-seconds="10"/>
+        <remember-me key="uniqueAndSecret" token-validity-seconds="100"/>
     </http>
 
     <authentication-manager>

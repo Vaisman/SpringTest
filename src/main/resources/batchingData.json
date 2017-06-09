@@ -1,12 +1,16 @@
 {
   "pairsArray": [
     {
-      "ticketId": "11",
-      "userId": "22"
+      "ticketId": "1",
+      "userId": "2",
+      "email": "2@2.ty",
+      "name": "name_2"
     },
     {
-      "ticketId": "33",
-      "userId": "44"
+      "ticketId": "1",
+      "userId": "1",
+      "email": "3@3.ty",
+      "name": "name_1"
     }
   ]
 }
