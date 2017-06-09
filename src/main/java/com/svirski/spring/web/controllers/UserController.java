@@ -111,4 +111,16 @@ public class UserController {
         modelAndView.addObject("ticketList", tickets);
         return modelAndView;
     }
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/")
+    public
+    @ResponseBody
+    ModelAndView getUsers() {
+        List<User> users = userService.getUsers();
+        return GetModelView(users);
+    }
 }

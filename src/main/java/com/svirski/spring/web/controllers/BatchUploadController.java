@@ -76,6 +76,8 @@ public class BatchUploadController {
                 JSONObject ticketJsonObject = (JSONObject) userTicketObject;
 
                 user.setId(Long.parseLong(ticketJsonObject.get("userId").toString()));
+                user.setEmail(ticketJsonObject.get("email").toString());
+                user.setName(ticketJsonObject.get("name").toString());
                 ticket.setId(Long.parseLong(ticketJsonObject.get("ticketId").toString()));
 
                 usersTickets.add(new Pair<>(user, ticket));
